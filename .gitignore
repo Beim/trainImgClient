@@ -2,4 +2,5 @@ images/
 *_lmdb/
 train.txt
 val.txt
-
+*.caffemodel
+*.solverstate
