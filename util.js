@@ -4,12 +4,12 @@ const path = require('path')
 const genLabels = () => {
     ROOT_DIR = path.join(__dirname, 'caffesource/rawimgs')
     IMG_PATH = path.join(ROOT_DIR, 'images')
-    TRAIN_TXT_PATH = path.join(ROOT_DIR, 'train1.txt')
-    TEST_TXT_PATH = path.join(ROOT_DIR, 'val1.txt')
+    TRAIN_TXT_PATH = path.join(ROOT_DIR, 'train.txt')
+    TEST_TXT_PATH = path.join(ROOT_DIR, 'val.txt')
 
     label_names = fs.readdirSync(IMG_PATH)
-    train_txt_fd = fs.open(TRAIN_TXT_PATH, 'w')
-    test_txt_fd = fs.open(TEST_TXT_PATH, 'w')
+    train_txt_fd = fs.openSync(TRAIN_TXT_PATH, 'w')
+    test_txt_fd = fs.openSync(TEST_TXT_PATH, 'w')
     for (let label of label_names) {
         img_names = fs.readdirSync(path.join(IMG_PATH, label))
         for (let j in img_names) {
@@ -24,10 +24,10 @@ const genLabels = () => {
             }
         }
     }
-    fs.close(train_txt_fd)
-    fs.close(test_txt_fd)
+    fs.closeSync(train_txt_fd)
+    fs.closeSync(test_txt_fd)
 }
-
+genLabels()
 
 const convImgs2Lmdb = () => {
 
