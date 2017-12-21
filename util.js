@@ -32,6 +32,5 @@ const genLabels = () => {
 const convImgs2Lmdb = () => {
     child_process.execSync(`rm -rf ${LMDB_DIR}/*`)
     const CONVERT_TOOL = path.join(ROOT_DIR, 'rawimgs/create_imgs_lmdb.sh')
-    let stdout = child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR}`)
-    console.log(stdout)
+    child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR}`)
 }
