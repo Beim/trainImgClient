@@ -6,8 +6,14 @@ caffe = new butil.Caffe()
 const test = async () => {
     let loss = 1000
     while (loss > 1) {
-        solver.increaseIter()
-        console.log('iter: ', solver.config.max_iter)
+        if (solver.config.max_iter < 2000) {
+            solver.increaseIter()
+        }
+        else {
+            solver.reduceLr()
+        }
+        
+        console.log('iter: ', solver.config.max_iter, ' lr: ', solver.config.base_lr)
         await caffe.trainModelAsync(solver)
         loss = await caffe.testModelAsync(solver)
     }
