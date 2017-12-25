@@ -16,4 +16,3 @@ const test = async () => {
 
 solver.update({max_iter: 10})
 test()
-// caffe.clear()
