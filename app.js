@@ -9,7 +9,7 @@ const test = async () => {
         if (solver.config.max_iter < 2000) {
             solver.increaseIter()
         }
-        else {
+        else if (solver.config.base_lr > 0.001) {
             solver.reduceLr()
         }
         
