@@ -15,7 +15,7 @@ layer {
     mean_value: 123
   }
   data_param {
-    source: "../lmdbimgs/train_lmdb"
+    source: "lmdbimgs/train_lmdb"
     batch_size: 8
     backend: LMDB
   }
@@ -36,7 +36,7 @@ layer {
     mean_value: 123
   }
   data_param {
-    source: "../lmdbimgs/val_lmdb"
+    source: "lmdbimgs/val_lmdb"
     batch_size: 20
     backend: LMDB
   }
