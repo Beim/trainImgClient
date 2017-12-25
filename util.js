@@ -18,6 +18,7 @@ class Solver {
     }
 
     recover() {
+        this.losses = []
         this.config = {
             net: "model/train_val.prototxt",
             test_iter: 1000,
@@ -39,7 +40,11 @@ class Solver {
     }
 
     autoAdjustConfig() {
-        if (this.config.max_iter < this.MAX_ITER) {
+        let losses_len = this.losses.length
+        if (losses_len > 2 && this.losses[losses_len - 1] > 10 * this.losses[losses_len - 2]) {
+            this.reduceLr()
+        } 
+        else if (this.config.max_iter < this.MAX_ITER) {
             this.increaseIter()
             return true
         }
@@ -78,7 +83,6 @@ class Solver {
             else {
                 solver_prototxt += `${key}: ${value}\n`
             }
-            
         }
         fs.writeFileSync(path.join(ROOT_DIR, 'model/solver.prototxt'), solver_prototxt)
     }
@@ -116,7 +120,7 @@ class Caffe {
     convImgs2Lmdb() {
         child_process.execSync(`rm -rf ${LMDB_DIR}/*`)
         const CONVERT_TOOL = path.join(ROOT_DIR, 'rawimgs/create_imgs_lmdb.sh')
-        child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR} > /dev/null`)
+        child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR} 2> /dev/null`)
     }
 
     clear() {
@@ -163,6 +167,7 @@ class Caffe {
             sub_proc.on('close', (code) => {
                 // console.log('testModel.code: ', code)
                 console.log('loss: ', loss)
+                this.losses.push(loss)
                 resolve(code === 0 ? loss : -1)
                 
             })
