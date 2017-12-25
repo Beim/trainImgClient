@@ -8,7 +8,7 @@ base_lr: 0.01
 lr_policy: "step"
 stepsize: 320000
 gamma: 0.96
-max_iter: 80
+max_iter: 20
 momentum: 0.9
 weight_decay: 0.0002
 snapshot: 200

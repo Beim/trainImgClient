@@ -39,11 +39,11 @@ class Solver {
     }
 
     autoAdjustConfig() {
-        if (this.config.max_iter > this.MAX_ITER) {
+        if (this.config.max_iter < this.MAX_ITER) {
             this.increaseIter()
             return true
         }
-        else if (this.config.base_lr < this.BASE_LR) {
+        else if (this.config.base_lr > this.BASE_LR) {
             this.reduceLr()
             return true
         }
