@@ -100,7 +100,7 @@ class Caffe {
     convImgs2Lmdb() {
         child_process.execSync(`rm -rf ${LMDB_DIR}/*`)
         const CONVERT_TOOL = path.join(ROOT_DIR, 'rawimgs/create_imgs_lmdb.sh')
-        child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR}`)
+        child_process.execSync(`"${CONVERT_TOOL}" ${TRAIN_TXT_PATH} ${TEST_TXT_PATH} ${LMDB_DIR} > /dev/null`)
     }
 
     clear() {
@@ -120,7 +120,7 @@ class Caffe {
                 // console.log(data.toString())
             })
             sub_proc.on('close', (code) => {
-                console.log('trainModel.code: ', code)
+                // console.log('trainModel.code: ', code)
                 resolve(code === 0 ? 0 : -1)
             })
             sub_proc.on('error', (err) => {
@@ -145,7 +145,7 @@ class Caffe {
                 }
             })
             sub_proc.on('close', (code) => {
-                console.log('testModel.code: ', code)
+                // console.log('testModel.code: ', code)
                 console.log('loss: ', loss)
                 resolve(code === 0 ? loss : -1)
                 
@@ -156,14 +156,6 @@ class Caffe {
         })
     }
 }
-
-
-
-
-// solver = new Solver()
-// solver.update({max_iter: 200})
-// // trainModel(solver)
-// testModel(solver)
 
 module.exports = {
     Solver,
