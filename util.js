@@ -167,7 +167,7 @@ class Caffe {
             sub_proc.on('close', (code) => {
                 // console.log('testModel.code: ', code)
                 console.log('loss: ', loss)
-                this.losses.push(loss)
+                solver.losses.push(loss)
                 resolve(code === 0 ? loss : -1)
                 
             })

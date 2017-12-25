@@ -5,7 +5,7 @@ caffe = new butil.Caffe()
 
 const test = async () => {
     let loss = 1000
-    while (loss > 0.1) {
+    while (loss > 0.01) {
         if (!solver.autoAdjustConfig()) break
         console.log('iter: ', solver.config.max_iter, ' lr: ', solver.config.base_lr)
         await caffe.trainModelAsync(solver)
