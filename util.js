@@ -13,6 +13,8 @@ class Solver {
     constructor() {
         this.recover()
         this.sync()
+        this.MAX_ITER = 2000
+        this.BASE_LR = 0.001
     }
 
     recover() {
@@ -33,6 +35,20 @@ class Solver {
             snapshot: 200,
             snapshot_prefix: "snapshot/bvlc_googlenet",
             solver_mode: 'GPU',
+        }
+    }
+
+    autoAdjustConfig() {
+        if (this.config.max_iter > this.MAX_ITER) {
+            this.increaseIter()
+            return true
+        }
+        else if (this.config.base_lr < this.BASE_LR) {
+            this.reduceLr()
+            return true
+        }
+        else {
+            return false
         }
     }
 
@@ -135,7 +151,7 @@ class Caffe {
             const CAFFE_TOOL = '/opt/caffe/build/tools/caffe'
             const MODEL_PATH = path.join(ROOT_DIR, 'model/train_val.prototxt')
             const CAFFEMODEL_PATH = path.join(ROOT_DIR, `snapshot/bvlc_googlenet_iter_${solver.config.max_iter}.caffemodel`)
-            const sub_proc = child_process.spawn(CAFFE_TOOL, ['test', '-model', MODEL_PATH, '-weights', CAFFEMODEL_PATH, '-gpu', '0', '-iterations', '20'], {'cwd': ROOT_DIR})
+            const sub_proc = child_process.spawn(CAFFE_TOOL, ['test', '-model', MODEL_PATH, '-weights', CAFFEMODEL_PATH, '-gpu', '0', '-iterations', '100'], {'cwd': ROOT_DIR})
             const reg = new RegExp('.*Loss: (.*)\n')
             sub_proc.stderr.on('data', (data) => {
                 data = data.toString()
